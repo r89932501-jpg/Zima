@@ -7,18 +7,18 @@ body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-ap
 header{padding:22px 4px 14px}h1{font-size:26px;letter-spacing:-.5px;margin:0 0 4px;font-weight:750}h2{font-size:16px;letter-spacing:-.15px;margin:0 0 14px}
 .muted,.note{color:var(--muted);font-size:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:12px;color:var(--muted);margin:8px 0 5px}
-input,button{font:inherit}input{width:100%;min-width:0;background:var(--panel-2);color:var(--text);border:1px solid #344248;border-radius:11px;padding:12px;min-height:46px;color-scheme:dark}input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.grid>div,.grid>label{min-width:0;max-width:100%}label{display:block;font-size:12px;color:var(--muted);margin:8px 0 5px}
+input,button{font:inherit}input{display:block;width:100%;max-width:100%;min-width:0;background:var(--panel-2);color:var(--text);-webkit-text-fill-color:var(--text);opacity:1;border:1px solid #344248;border-radius:11px;padding:12px;min-height:46px;color-scheme:dark}input[type=date],input[type=time],input[type=month]{font-size:16px;line-height:1.2;min-height:48px;appearance:none;-webkit-appearance:none}input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
 button{border:0;border-radius:11px;padding:12px 16px;background:var(--accent);color:#171020;font-weight:700;min-height:42px;cursor:pointer}button:active{transform:scale(.98)}
 .secondary{background:#273238;color:var(--text);border:1px solid #35434a}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row button{flex:1}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stat{background:var(--panel-2);border:1px solid #253238;border-radius:14px;padding:12px;min-width:0}
 .stat b{display:block;font-size:clamp(19px,4vw,24px);line-height:1.2;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}.stat span{display:block;font-size:11px;color:var(--muted);margin-top:5px}
 .entry{border-top:1px solid var(--line);padding:14px 0}.entry:first-child{border:0}.entry b{display:block;font-size:14px}.entry small{display:block;color:var(--muted);line-height:1.55;margin-top:3px}
 .danger{background:rgba(255,100,100,.12);border:1px solid rgba(255,130,130,.22);color:#ffaaaa}.extra{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:12px;margin-top:10px}
-.extra-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.extra-head b{font-size:13px}.extra-head button{padding:7px 11px;min-height:34px}.hidden{display:none!important}#month{width:auto;max-width:170px}
+.extra-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.extra-head b{font-size:13px}.extra-head button{padding:7px 11px;min-height:34px}.hidden{display:none!important}#month{width:150px;max-width:45%;flex:0 0 150px}
 #history h3{background:var(--accent-soft);border:1px solid rgba(182,156,255,.16);border-radius:9px;padding:7px 10px}.card>.row{margin-bottom:8px}
-@media(max-width:520px){body{padding-inline:12px}.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.card{padding:14px;border-radius:16px}.row button{font-size:13px;padding:11px 9px}}
-@media(max-width:350px){.grid{grid-template-columns:1fr}}
+@media(max-width:520px){body{padding-inline:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:1fr 1fr}.card{padding:14px;border-radius:16px}.row button{font-size:13px;padding:11px 9px}}
+@media(max-width:350px){.grid{grid-template-columns:1fr}#month{width:130px;flex-basis:130px}}
 </style></head><body>
 <header><div class="muted" style="letter-spacing:1.4px;font-weight:700;color:var(--accent)">ПРОФИЛЬ / ЖУРНАЛ</div><h1>Блокнот смен</h1><div class="muted">Учёт рабочего времени · московское время (UTC+3)</div></header>
 <section class="card"><h2 style="font-size:17px;margin:0 0 8px">Смена</h2>
