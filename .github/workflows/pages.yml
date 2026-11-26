@@ -123,6 +123,8 @@ jobs:
           </body></html>'''
           (root / "notebook.html").write_text(notebook, encoding="utf-8")
           PY
+      - name: Use latest notebook page from repository
+        run: cp notebook.html site/notebook.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site artifact
