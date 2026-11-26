@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101a1b"><title>Зарплата — ПРОФИЛЬ</title>
+<link rel="stylesheet" href="./shell.css">
+<style>
+:root{color-scheme:dark;--bg:#0b1012;--panel:#131a1d;--panel-2:#0d1416;--line:#29363b;--muted:#91a09f;--accent:#b69cff;--accent-soft:rgba(182,156,255,.13);--text:#e7eeec}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 14px calc(112px + env(safe-area-inset-bottom));max-width:900px;margin-inline:auto}
+header{padding:22px 4px 14px}h1{font-size:26px;letter-spacing:-.5px;margin:0 0 4px;font-weight:750}h2{font-size:16px;margin:0 0 13px}.muted,.note{color:var(--muted);font-size:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}label{display:block;font-size:12px;color:var(--muted);margin:8px 0 5px}
+input,button{font:inherit}input{display:block;width:100%;min-width:0;background:var(--panel-2);color:var(--text);border:1px solid #344248;border-radius:11px;padding:12px;min-height:46px;font-size:16px;color-scheme:dark}input:focus{outline:2px solid var(--accent);outline-offset:1px}
+button{border:0;border-radius:11px;padding:12px 16px;background:var(--accent);color:#171020;font-weight:700;min-height:44px}.secondary{background:#273238;color:var(--text);border:1px solid #35434a}
+.hero{background:linear-gradient(135deg,#292238,#1b2027);border:1px solid #51436e;border-radius:16px;padding:17px}.hero small{color:#c3b5e8}.amount{font-size:clamp(28px,8vw,38px);font-weight:800;letter-spacing:-1px;color:#fff;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.stat{background:var(--panel-2);border:1px solid #253238;border-radius:13px;padding:12px}.stat b{display:block;font-size:20px;color:var(--accent);font-variant-numeric:tabular-nums}.stat span{font-size:11px;color:var(--muted)}
+.line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.line:last-child{border:0}.line span{color:var(--muted)}.line b{font-variant-numeric:tabular-nums;text-align:right}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1}.noteBox{background:var(--accent-soft);border:1px solid rgba(182,156,255,.2);border-radius:12px;padding:11px;color:#d8cef4;font-size:12px}
+@media(max-width:520px){body{padding-inline:12px}.card{padding:14px;border-radius:16px}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:350px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="muted" style="letter-spacing:1.4px;font-weight:700;color:var(--accent)">ПРОФИЛЬ / РАСЧЁТЫ</div><h1>Калькулятор зарплаты</h1><div class="muted">Почасовая оплата · предварительный расчёт</div></header>
+<section class="card"><div class="hero"><small>Ориентировочно к выплате</small><div class="amount" id="takeHome">0 ₽</div><small id="grossCaption">Начислено: 0 ₽</small></div>
+<div class="stats"><div class="stat"><b id="normalPay">0 ₽</b><span>Обычные часы</span></div><div class="stat"><b id="overtimePay">0 ₽</b><span>Сверх нормы × 2</span></div><div class="stat"><b id="nightPay">0 ₽</b><span>Ночная доплата</span></div><div class="stat"><b id="extrasPay">0 ₽</b><span>Дополнительные выплаты</span></div></div></section>
+<section class="card"><h2>Рабочее время и тариф</h2><div class="grid">
+<div><label for="month">Месяц</label><input id="month" type="month"></div><div><label for="rate">Тариф, ₽/час</label><input id="rate" type="number" inputmode="decimal" step="0.01" value="291.61"></div>
+<div><label for="norm">Норма часов</label><input id="norm" type="number" inputmode="decimal" step="0.01" value="176"></div><div><label for="hours">Отработано часов</label><input id="hours" type="number" inputmode="decimal" step="0.01" value="195.38"></div>
+<div><label for="night">Ночные часы</label><input id="night" type="number" inputmode="decimal" step="0.01" value="65.49"></div><div><label for="nightRate">Доплата за ночь, %</label><input id="nightRate" type="number" inputmode="decimal" step="1" value="40"></div>
+</div></section>
+<section class="card"><h2>Надбавки и выплаты</h2><div class="grid">
+<div><label for="classPay">Классность и прочие доплаты, ₽</label><input id="classPay" type="number" inputmode="decimal" step="0.01" value="0"></div><div><label for="bonus">Премии, ₽</label><input id="bonus" type="number" inputmode="decimal" step="0.01" value="0"></div>
+<div><label for="holiday">Праздничные / выходные, ₽</label><input id="holiday" type="number" inputmode="decimal" step="0.01" value="0"></div><div><label for="deductions">Прочие удержания, ₽</label><input id="deductions" type="number" inputmode="decimal" step="0.01" value="0"></div>
+<div><label for="district">Районный коэффициент, %</label><input id="district" type="number" inputmode="decimal" step="1" value="20"></div><div><label for="north">Северная надбавка, %</label><input id="north" type="number" inputmode="decimal" step="1" value="30"></div>
+<div><label for="local">Местный коэффициент, %</label><input id="local" type="number" inputmode="decimal" step="1" value="10"></div><div><label for="coeffBase">База для коэффициентов, ₽</label><input id="coeffBase" type="number" inputmode="decimal" step="0.01" placeholder="Автоматически"></div>
+<div><label for="tax">НДФЛ для оценки, %</label><input id="tax" type="number" inputmode="decimal" step="0.1" value="13"></div>
+</div><p class="note">Если поле «База для коэффициентов» пустое, калькулятор применит коэффициенты к тарифной оплате, ночной доплате и введённым доплатам. Если бухгалтерия использует другую базу, введи её вручную.</p></section>
+<section class="card"><h2>Расшифровка расчёта</h2><div id="details"></div><div class="noteBox" style="margin-top:12px">Важно: двойная оплата сверх нормы и проценты взяты из твоих пояснений. Состав базы районного, северного и местного начислений, а также правила НДФЛ пока не подтверждены документально. Это оценочный калькулятор, не официальный расчёт РЖД.</div><div class="actions" style="margin-top:14px"><button id="save" type="button">Сохранить расчёт</button><button id="reset" class="secondary" type="button">Сбросить</button></div></section>
+<section class="card"><h2>История расчётов</h2><div id="history" class="muted">Пока нет сохранённых расчётов</div></section>
+<script>
+(function(){
+const ids=['month','rate','norm','hours','night','nightRate','classPay','bonus','holiday','deductions','district','north','local','coeffBase','tax'];const $=id=>document.getElementById(id);const KEY='zima_salary_history_v1';
+const n=id=>{const v=parseFloat($(id).value);return Number.isFinite(v)?v:0};const money=v=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(v);
+function calc(){
+ const rate=n('rate'),norm=n('norm'),hours=n('hours'),night=Math.min(n('night'),hours),normalHours=Math.min(hours,norm),over=Math.max(0,hours-norm);
+ const normal=normalHours*rate, overtime=over*rate*2, nightPay=night*rate*n('nightRate')/100;
+ const extras=n('classPay')+n('bonus')+n('holiday'),baseInput=n('coeffBase');
+ const base=baseInput>0?baseInput:normal+overtime+nightPay+extras;
+ const district=base*n('district')/100,north=base*n('north')/100,local=base*n('local')/100;
+ const gross=normal+overtime+nightPay+extras+district+north+local;
+ const tax=gross*n('tax')/100,net=gross-tax-n('deductions');
+ $('takeHome').textContent=money(net);$('grossCaption').textContent='Начислено: '+money(gross);
+ $('normalPay').textContent=money(normal);$('overtimePay').textContent=money(overtime);$('nightPay').textContent=money(nightPay);$('extrasPay').textContent=money(extras);
+ const rows=[['Обычные часы',normalHours+' ч × '+money(rate),normal],['Сверх нормы',over+' ч × '+money(rate)+' × 2',overtime],['Ночная доплата',night+' ч × '+money(rate)+' × '+n('nightRate')+'%',nightPay],['Дополнительные выплаты','Классность + премии + праздничные',extras],['База коэффициентов',baseInput>0?'Введена вручную':'Расчётная',base],['Районный коэффициент',n('district')+'%',district],['Северная надбавка',n('north')+'%',north],['Местный коэффициент',n('local')+'%',local],['Начислено всего','',gross],['Оценка НДФЛ',n('tax')+'%',-tax],['Прочие удержания','',-n('deductions')],['К выплате','',net]];
+ $('details').innerHTML=rows.map((r,i)=>'<div class="line"><span>'+r[0]+'<br><small>'+r[1]+'</small></span><b>'+money(r[2])+'</b></div>').join('');
+ return {month:$('month').value,rate,norm,hours,night,normal,over,overtime,nightPay,extras,base,district,north,local,gross,tax,deductions:n('deductions'),net};
+}
+function history(){let list=JSON.parse(localStorage.getItem(KEY)||'[]');$('history').innerHTML=list.length?list.slice().reverse().map(x=>'<div class="line"><span>'+x.month+'<br><small>'+x.hours+' ч · тариф '+x.rate+' ₽</small></span><b>'+money(x.net)+'</b></div>').join(''):'Пока нет сохранённых расчётов'}
+ids.forEach(id=>$(id).addEventListener('input',calc));
+$('save').onclick=()=>{let x=calc(),list=JSON.parse(localStorage.getItem(KEY)||'[]');list.push(x);localStorage.setItem(KEY,JSON.stringify(list));history()};
+$('reset').onclick=()=>{['rate','norm','hours','night','nightRate','classPay','bonus','holiday','deductions','district','north','local','coeffBase','tax'].forEach(id=>$(id).value=({rate:291.61,norm:176,hours:0,night:0,nightRate:40,classPay:0,bonus:0,holiday:0,deductions:0,district:20,north:30,local:10,coeffBase:'',tax:13})[id]);calc()};
+const d=new Date();$('month').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');calc();history();
+})();
+</script><script src="./shell.js"></script></body></html>
