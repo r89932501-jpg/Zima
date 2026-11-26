@@ -123,8 +123,11 @@ jobs:
           </body></html>'''
           (root / "notebook.html").write_text(notebook, encoding="utf-8")
           PY
-      - name: Use latest notebook page from repository
-        run: cp notebook.html site/notebook.html
+      - name: Use latest shared navigation and notebook from repository
+        run: |
+          cp notebook.html site/notebook.html
+          cp shell.js site/shell.js
+          find site -type f -name '*.html' -exec sed -i 's|./shell.js|./shell.js?v=20261127a|g' {} +
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site artifact
