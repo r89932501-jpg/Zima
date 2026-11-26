@@ -1,7 +1,7 @@
 /* Общая оболочка: нижняя навигация между разделами. Работает без интернета. */
 (function(){
   var file=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  var sec={'3es5k.html':'faults','electrical.html':'schemes','tormoza_83.html':'brakes','notebook.html':'notebook'}[file]||'profile';
+  var sec={'3es5k.html':'faults','electrical.html':'schemes','tormoza_83.html':'brakes','notebook.html':'notebook','salary.html':'salary'}[file]||'profile';
   document.documentElement.setAttribute('data-sec',sec);
   var I={
     home:'<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>',
@@ -15,6 +15,7 @@
     {id:'home',t:'Главная',h:'index.html',c:'#f2c14e'},
     {id:'profile',t:'Профиль',h:'index.html#profile',c:'#f2c14e'},
     {id:'notebook',t:'Блокнот',h:'notebook.html',c:'#f2c14e'},
+    {id:'salary',t:'Зарплата',h:'salary.html',c:'#f2c14e'},
     {id:'faults',t:'3ЭС5К',h:'3ES5K.html',c:'#f2c14e'},
     {id:'schemes',t:'Схемы',h:'electrical.html',c:'#f2c14e'},
     {id:'brakes',t:'Тормоза',h:'Tormoza_83.html',c:'#f2c14e'}
