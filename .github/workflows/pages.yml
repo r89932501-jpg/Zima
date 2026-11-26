@@ -1,0 +1,141 @@
+name: Build and deploy Zima web app
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract app and add notebook
+        run: |
+          python3 - <<'PY'
+          import zipfile, pathlib, re
+          archive = pathlib.Path("Profil_Nizhneudinsk_UlanUde.zip")
+          if not archive.exists():
+              raise SystemExit("Не найден Profil_Nizhneudinsk_UlanUde.zip в корне репозитория")
+          with zipfile.ZipFile(archive) as z:
+              z.extractall("site")
+          root = pathlib.Path("site")
+          shell = root / "shell.js"
+          s = shell.read_text(encoding="utf-8")
+          s = s.replace("'3es5k.html':'faults','electrical.html':'schemes','tormoza_83.html':'brakes'", "'3es5k.html':'faults','electrical.html':'schemes','tormoza_83.html':'brakes','notebook.html':'notebook'")
+          s = s.replace("brakes:'<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 4v2M12 18v2M4 12h2M18 12h2\"/></svg>'", "brakes:'<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 4v2M12 18v2M4 12h2M18 12h2\"/></svg>',\n    notebook:'<svg viewBox=\"0 0 24 24\"><path d=\"M6 4.5h13v15H6zM3.5 7h5M3.5 12h5M3.5 17h5M10 8h5M10 12h5\"/></svg>'")
+          s = s.replace("{id:'brakes',t:'Тормоза',h:'Tormoza_83.html',c:'#f2c14e'}", "{id:'brakes',t:'Тормоза',h:'Tormoza_83.html',c:'#f2c14e'},\n    {id:'notebook',t:'Блокнот',h:'notebook.html',c:'#b69cff'}")
+          shell.write_text(s, encoding="utf-8")
+          css = root / "shell.css"
+          c = css.read_text(encoding="utf-8")
+          c = c.replace("grid-template-columns:repeat(5,1fr)", "grid-template-columns:repeat(6,1fr)")
+          c += "\nhtml[data-sec=notebook]{--sec:#b69cff}\n"
+          css.write_text(c, encoding="utf-8")
+          sw = root / "sw.js"
+          if sw.exists():
+              w = sw.read_text(encoding="utf-8").replace("profile-app-v5", "profile-app-v6")
+              w = w.replace("'./icon.svg']", "'./icon.svg', './notebook.html']")
+              sw.write_text(w, encoding="utf-8")
+          notebook = r'''<!doctype html>
+          <html lang="ru"><head>
+          <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+          <meta name="theme-color" content="#0b1012"><title>Блокнот — ПРОФИЛЬ</title>
+          <link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./shell.css">
+          <style>
+          :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;color:#e7eeec;background:#0b1012;font:14px/1.45 'IBM Plex Sans',system-ui,sans-serif;padding:18px 14px 110px}
+          .wrap{max-width:760px;margin:auto;display:grid;gap:14px}.head{display:flex;align-items:center;justify-content:space-between;gap:12px}.head h1{font-size:25px;margin:0}.muted{color:#91a09f}.card{background:#131a1d;border:1px solid #29363b;border-radius:16px;padding:16px;min-width:0}.card h2{font-size:16px;margin:0 0 14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:5px}.field span{font-size:12px;color:#9aabaa}.field input{width:100%;min-width:0;background:#0c1214;color:#f1f5f3;border:1px solid #344248;border-radius:10px;padding:12px;font:inherit;color-scheme:dark}.field input:focus{outline:2px solid #b69cff;border-color:transparent}.wide{grid-column:1/-1}.btn{border:0;border-radius:11px;padding:12px 16px;background:#b69cff;color:#171020;font-weight:700;font:600 14px inherit}.btn.secondary{background:#273238;color:#e7eeec}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0d1416;border-radius:12px;padding:12px}.stat b{display:block;font-size:23px;font-variant-numeric:tabular-nums}.stat small{color:#9aabaa}.entry{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #29363b}.entry:last-child{border:0}.entry strong{display:block}.entry small{color:#9aabaa}.delete{background:transparent;border:1px solid #4a3b3b;color:#ff9c9c;border-radius:9px;padding:8px 10px}.empty{color:#9aabaa;text-align:center;padding:22px 8px}.note{font-size:12px;color:#9aabaa}.month{background:#0d1416;color:#e7eeec;border:1px solid #344248;border-radius:10px;padding:10px;font:inherit}
+          @media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.card{padding:13px}}
+          </style></head><body>
+          <main class="wrap">
+            <header class="head"><div><div class="muted">ПРОФИЛЬ / ЖУРНАЛ</div><h1>Рабочий блокнот</h1></div><div class="muted">МСК · UTC+3</div></header>
+            <section class="card"><h2>Новая смена</h2>
+              <form id="entryForm">
+                <div class="grid">
+                  <label class="field wide"><span>Дата смены (МСК)</span><input id="date" type="date" required></label>
+                  <label class="field"><span>Начало работы</span><input id="start" type="time"></label>
+                  <label class="field"><span>Окончание работы</span><input id="end" type="time"></label>
+                  <label class="field"><span>Пассажиром — начало</span><input id="pstart" type="time"></label>
+                  <label class="field"><span>Пассажиром — окончание</span><input id="pend" type="time"></label>
+                  <label class="field"><span>Обед — начало</span><input id="lstart" type="time"></label>
+                  <label class="field"><span>Обед — окончание</span><input id="lend" type="time"></label>
+                  <label class="field wide"><span>Примечание</span><input id="comment" type="text" maxlength="180" placeholder="Маршрут, локомотив, замечания…"></label>
+                </div>
+                <div class="actions"><button class="btn" type="submit">Сохранить смену</button><button class="btn secondary" type="reset">Очистить</button></div>
+              </form>
+              <p class="note">Все значения времени вводятся по Москве. Если окончание раньше начала, система считает, что событие завершилось на следующие сутки.</p>
+            </section>
+            <section class="card"><div class="head"><h2>Итоги за месяц</h2><input class="month" id="month" type="month"></div>
+              <div class="stats" style="margin-top:14px">
+                <div class="stat"><b id="hours">0 ч</b><small>Рабочее время</small></div>
+                <div class="stat"><b id="passenger">0 ч</b><small>Пассажиром</small></div>
+                <div class="stat"><b id="lunch">0 ч</b><small>Обед</small></div>
+              </div>
+              <p class="note" id="count" style="margin-bottom:0">Смен: 0 · Рабочее время считается за вычетом обеда</p>
+            </section>
+            <section class="card"><div class="head"><h2>История смен</h2><span class="muted" id="total">0 записей</span></div><div id="list"></div></section>
+          </main>
+          <script>
+          (function(){
+            const KEY='profile-work-notebook-v1', $=id=>document.getElementById(id);
+            const pad=n=>String(n).padStart(2,'0');
+            const mskNow=()=>new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/Moscow'}));
+            const today=()=>{const d=mskNow();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+            const monthNow=()=>today().slice(0,7);
+            let rows=[];try{rows=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+            $('date').value=today();$('month').value=monthNow();
+            function duration(a,b){if(!a||!b)return 0;let [ah,am]=a.split(':').map(Number),[bh,bm]=b.split(':').map(Number);let n=bh*60+bm-(ah*60+am);if(n<0)n+=1440;return n}
+            function fmt(n){let h=Math.floor(n/60),m=n%60;return h+' ч'+(m?' '+m+' мин':'')}
+            function save(){localStorage.setItem(KEY,JSON.stringify(rows))}
+            function render(){
+              const m=$('month').value, list=rows.filter(x=>x.date.slice(0,7)===m).sort((a,b)=>b.date.localeCompare(a.date));
+              let work=0,pass=0,lunch=0;
+              list.forEach(x=>{let shift=duration(x.start,x.end), l=duration(x.lstart,x.lend);work+=Math.max(0,shift-l);pass+=duration(x.pstart,x.pend);lunch+=l});
+              $('hours').textContent=fmt(work);$('passenger').textContent=fmt(pass);$('lunch').textContent=fmt(lunch);$('count').textContent='Смен: '+list.length+' · Рабочее время считается за вычетом обеда';$('total').textContent=list.length+' записей';
+              $('list').innerHTML=list.length?'':'<div class="empty">За этот месяц записей пока нет</div>';
+              list.forEach(x=>{
+                const div=document.createElement('div');div.className='entry';
+                const detail=['Работа: '+(x.start||'—')+'–'+(x.end||'—'),'Пассажиром: '+(x.pstart||'—')+'–'+(x.pend||'—'),'Обед: '+(x.lstart||'—')+'–'+(x.lend||'—')].join(' · ');
+                const left=document.createElement('div'), strong=document.createElement('strong'), small=document.createElement('small'), note=document.createElement('small');
+                strong.textContent=x.date.split('-').reverse().join('.');small.textContent=detail;note.textContent=x.comment||'';left.append(strong,small,note);
+                const del=document.createElement('button');del.className='delete';del.textContent='Удалить';del.onclick=()=>{if(confirm('Удалить запись за '+x.date+'?')){rows=rows.filter(y=>y.id!==x.id);save();render()}};
+                div.append(left,del);$('list').append(div);
+              });
+            }
+            $('entryForm').addEventListener('submit',e=>{
+              e.preventDefault();
+              const x={id:Date.now().toString(),date:$('date').value,start:$('start').value,end:$('end').value,pstart:$('pstart').value,pend:$('pend').value,lstart:$('lstart').value,lend:$('lend').value,comment:$('comment').value.trim()};
+              if(!x.start&&!x.end&&!x.pstart&&!x.pend&&!x.lstart&&!x.lend){alert('Заполни хотя бы одно время');return}
+              rows.push(x);save();e.target.reset();$('date').value=today();render();
+            });
+            $('month').addEventListener('change',render);render();
+          })();
+          </script><script src="./shell.js"></script>
+          </body></html>'''
+          (root / "notebook.html").write_text(notebook, encoding="utf-8")
+          PY
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
