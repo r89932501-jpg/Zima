@@ -1,9 +1,26 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101a1b"><title>Блокнот смен — ПРОФИЛЬ</title>
-<style>
-:root{color-scheme:dark;--bg:#101a1b;--panel:#192627;--line:#304344;--muted:#9aacab;--accent:#f2c14e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#eef5f2;font:15px system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top) 14px calc(90px + env(safe-area-inset-bottom));max-width:760px;margin:auto}header{padding:20px 4px 14px}h1{font-size:25px;margin:0 0 5px}.muted{color:var(--muted);font-size:13px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:12px;color:var(--muted);margin:8px 0 5px}input,button{font:inherit}input{width:100%;background:#101a1b;color:#eef5f2;border:1px solid var(--line);border-radius:10px;padding:12px;min-height:44px}button{border:0;border-radius:12px;padding:12px 16px;background:var(--accent);color:#172020;font-weight:700}.secondary{background:#2a3b3c;color:#eef5f2}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row button{flex:1}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#101a1b;border-radius:12px;padding:12px}.stat b{display:block;font-size:20px;color:var(--accent)}.stat span{font-size:11px;color:var(--muted)}.entry{border-top:1px solid var(--line);padding:12px 0}.entry:first-child{border:0}.entry b{display:block}.entry small{color:var(--muted)}.danger{background:#512f32;color:#ffe1e1}.extra{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}.extra-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.extra-head b{font-size:14px}.extra-head button{padding:7px 11px}.hidden{display:none!important}@media(max-width:420px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+<link rel="stylesheet" href="./shell.css">\n<style>
+:root{color-scheme:dark;--bg:#0b1012;--panel:#131a1d;--panel-2:#0d1416;--line:#29363b;--muted:#91a09f;--accent:#b69cff;--accent-soft:rgba(182,156,255,.13);--text:#e7eeec}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 14px calc(112px + env(safe-area-inset-bottom));max-width:900px;margin-inline:auto}
+header{padding:22px 4px 14px}h1{font-size:26px;letter-spacing:-.5px;margin:0 0 4px;font-weight:750}h2{font-size:16px;letter-spacing:-.15px;margin:0 0 14px}
+.muted,.note{color:var(--muted);font-size:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:12px;color:var(--muted);margin:8px 0 5px}
+input,button{font:inherit}input{width:100%;min-width:0;background:var(--panel-2);color:var(--text);border:1px solid #344248;border-radius:11px;padding:12px;min-height:46px;color-scheme:dark}input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+button{border:0;border-radius:11px;padding:12px 16px;background:var(--accent);color:#171020;font-weight:700;min-height:42px;cursor:pointer}button:active{transform:scale(.98)}
+.secondary{background:#273238;color:var(--text);border:1px solid #35434a}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row button{flex:1}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stat{background:var(--panel-2);border:1px solid #253238;border-radius:14px;padding:12px;min-width:0}
+.stat b{display:block;font-size:clamp(19px,4vw,24px);line-height:1.2;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}.stat span{display:block;font-size:11px;color:var(--muted);margin-top:5px}
+.entry{border-top:1px solid var(--line);padding:14px 0}.entry:first-child{border:0}.entry b{display:block;font-size:14px}.entry small{display:block;color:var(--muted);line-height:1.55;margin-top:3px}
+.danger{background:rgba(255,100,100,.12);border:1px solid rgba(255,130,130,.22);color:#ffaaaa}.extra{background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:12px;margin-top:10px}
+.extra-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.extra-head b{font-size:13px}.extra-head button{padding:7px 11px;min-height:34px}.hidden{display:none!important}#month{width:auto;max-width:170px}
+#history h3{background:var(--accent-soft);border:1px solid rgba(182,156,255,.16);border-radius:9px;padding:7px 10px}.card>.row{margin-bottom:8px}
+@media(max-width:520px){body{padding-inline:12px}.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.card{padding:14px;border-radius:16px}.row button{font-size:13px;padding:11px 9px}}
+@media(max-width:350px){.grid{grid-template-columns:1fr}}
 </style></head><body>
-<header><h1>Блокнот смен</h1><div class="muted">Одна запись на смену · все даты и время — московское (МСК, UTC+3)</div></header>
+<header><div class="muted" style="letter-spacing:1.4px;font-weight:700;color:var(--accent)">ПРОФИЛЬ / ЖУРНАЛ</div><h1>Блокнот смен</h1><div class="muted">Учёт рабочего времени · московское время (UTC+3)</div></header>
 <section class="card"><h2 style="font-size:17px;margin:0 0 8px">Смена</h2>
 <div class="grid"><div><label>Начало смены — дата</label><input id="startDate" type="date"></div><div><label>Начало смены — время МСК</label><input id="startTime" type="time"></div><div><label>Окончание смены — дата</label><input id="endDate" type="date"></div><div><label>Окончание смены — время МСК</label><input id="endTime" type="time"></div></div>
 <div class="row" style="margin-top:14px"><button type="button" class="secondary" id="addMeal">＋ Добавить обед</button><button type="button" class="secondary" id="addPassenger">＋ Следование пассажиром</button></div>
@@ -41,4 +58,4 @@ $('history').onclick=e=>{let id=e.target.dataset.edit,del=e.target.dataset.del;i
 $('month').onchange=render;$('export').onclick=()=>{let blob=new Blob([JSON.stringify(items,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bloknot-smen.json';a.click();URL.revokeObjectURL(a.href)};
 let [d]=mskNow();$('month').value=d.slice(0,7);reset();render();
 })();
-</script></body></html>
+</script><script src="./shell.js"></script></body></html>
